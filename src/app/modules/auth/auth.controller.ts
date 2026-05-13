@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
-
+import sendResponse from "../../../utils/ApiResponse";
+import httpStatus  from "http-status";
 // Handles-> Req, Res, Service Call
 const login = async (req: Request, res: Response) => {
   const result = await AuthService.login("email@com");
@@ -16,9 +17,11 @@ const register = async (req: Request, res: Response) => {
     name: "Rifat",
     email: "rifat@gmail.com",
   });
-  res.json({
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
     success: true,
-    message: "Register Successful",
+    message: "Login successful",
     data: result,
   });
 };

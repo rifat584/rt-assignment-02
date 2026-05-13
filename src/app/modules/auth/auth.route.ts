@@ -6,8 +6,10 @@ import { AuthValidation } from "./auth.validation";
 const router:Router = Router();
 
 // Handles -> Endpoint creation, connecting routes to controller
-router.get("/login", validateRequestData(AuthValidation.loginSchema), AuthController.login);
-router.get("/register", AuthController.register);
+router.get("/login",
+  // validateRequestData(AuthValidation.loginSchema),
+  AuthController.login);
+router.get("/register",validateRequestData(AuthValidation.registerSchema), AuthController.register);
 router.get("/change-password", AuthController.changePassword);
 router.get("/forgot-password", AuthController.forgotPassword);
 
