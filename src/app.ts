@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import { AuthRoutes } from "./app/modules/auth/auth.route";
+import router from "./app/routes/routes";
 
 const app = express();
 
@@ -17,8 +18,8 @@ app.get("/", (req: Request, res: Response) => {
   });
 });
 
-// Listen and create the base path
-const path: string = "/api/v1/auth";
-app.use(path, AuthRoutes);
+// Listen and create the base path & call router
+const path: string = "/api/v1";
+app.use(path, router);
 
 export default app;
