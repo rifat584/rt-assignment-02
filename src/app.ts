@@ -1,6 +1,7 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import { AuthRoutes } from "./app/modules/auth/auth.route";
 
 const app = express();
 
@@ -15,5 +16,9 @@ app.get("/", (req: Request, res: Response) => {
     message: "Successful",
   });
 });
+
+// Listen and create the base path
+const path: string = "/api/v1/auth"
+app.use(path, AuthRoutes);
 
 export default app;
