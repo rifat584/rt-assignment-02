@@ -18,7 +18,7 @@ app.get("/", (req: Request, res: Response) => {
 });
 
 // Listen and create the base path
-const path: string = "/api/v1/auth"
+const path: string = "/api/v1/auth";
 app.use(path, AuthRoutes);
 
 export default app;
