@@ -4,3 +4,10 @@ export interface TResponse<T> {
   message: string;
   data?: T;
 }
+
+export interface errResponse {
+  success: boolean;
+  message: string;
+  stack?: string,
+  error?: string,
+}

@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import { AuthRoutes } from "./app/modules/auth/auth.route";
 import router from "./app/routes/routes";
 import notFound from "./app/middleware/notFound";
+import globalError from "./app/middleware/globalError";
 
 const app = express();
 
@@ -24,6 +25,7 @@ const path: string = "/api/v1";
 app.use(path, router);
 
 // Returns 404 for any invalid routes
+app.use(globalError);
 app.use(notFound);
 
 export default app;

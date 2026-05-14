@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import sendResponse from "../../../utils/ApiResponse";
-import httpStatus  from "http-status";
+import httpStatus from "http-status";
+
 // Handles-> Req, Res, Service Call
 const login = async (req: Request, res: Response) => {
   const result = await AuthService.login("email@com");
