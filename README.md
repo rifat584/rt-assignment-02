@@ -1,3 +1,362 @@
+# SQL Interview Questions and Answers
+
+---
+
+## Table of Contents
+
+1. [Difference Between DELETE, TRUNCATE, and DROP](#1-difference-between-delete-truncate-and-drop)
+2. [What is a Primary Key?](#2-what-is-a-primary-key)
+3. [Primary Key vs Unique Key](#3-primary-key-vs-unique-key)
+4. [What is a Foreign Key?](#4-what-is-a-foreign-key)
+5. [What is JOIN in SQL?](#5-what-is-join-in-sql)
+6. [What is Normalization?](#6-what-is-normalization)
+7. [What is Indexing?](#7-what-is-indexing)
+8. [WHERE vs HAVING](#8-where-vs-having)
+9. [What is a Transaction?](#9-what-is-a-transaction)
+10. [Second Highest Salary Query](#10-second-highest-salary-query)
+
+---
+
+## 1. Difference Between `DELETE`, `TRUNCATE`, and `DROP`
+
+| Command | Description |
+|---|---|
+| `DELETE` | Removes selected rows from a table. It can use a `WHERE` condition. |
+| `TRUNCATE` | Removes all rows from a table quickly, but keeps the table structure. |
+| `DROP` | Removes the entire table, including its data and structure. |
+
+### Example
+
+```sql
+DELETE FROM users WHERE id = 1;
+
+TRUNCATE TABLE users;
+
+DROP TABLE users;
+```
+
+---
+
+## 2. What is a Primary Key?
+
+A **Primary Key** is a column that uniquely identifies each row in a table.
+
+A primary key:
+
+- Must be unique
+- Cannot be `NULL`
+- Helps identify each record separately
+
+### Example
+
+```sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100)
+);
+```
+
+Here, `id` is the primary key.
+
+---
+
+## 3. Primary Key vs Unique Key
+
+| Primary Key | Unique Key |
+|---|---|
+| Uniquely identifies each row | Ensures values are unique |
+| Cannot be `NULL` | Can allow `NULL` depending on the database |
+| Only one primary key per table | Multiple unique keys can exist in a table |
+| Commonly used for `id` | Commonly used for `email`, `username`, or `phone` |
+
+### Example
+
+```sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  email VARCHAR(100) UNIQUE
+);
+```
+
+Here, `id` is the primary key and `email` is a unique key.
+
+---
+
+## 4. What is a Foreign Key?
+
+A **Foreign Key** is used to create a relationship between two tables.
+
+It usually refers to the primary key of another table.
+
+### Example
+
+```sql
+CREATE TABLE users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(100)
+);
+
+CREATE TABLE orders (
+  id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES users(id),
+  total_price INT
+);
+```
+
+Here, `user_id` in the `orders` table refers to the `id` column of the `users` table.
+
+This means one user can have many orders.
+
+---
+
+## 5. What is JOIN in SQL?
+
+A **JOIN** is used to combine data from two or more tables based on a related column.
+
+---
+
+### INNER JOIN
+
+`INNER JOIN` returns only the matching rows from both tables.
+
+```sql
+SELECT users.name, orders.total_price
+FROM users
+INNER JOIN orders
+ON users.id = orders.user_id;
+```
+
+If a user has no order, that user will not appear in the result.
+
+---
+
+### LEFT JOIN
+
+`LEFT JOIN` returns all rows from the left table and matching rows from the right table.
+
+```sql
+SELECT users.name, orders.total_price
+FROM users
+LEFT JOIN orders
+ON users.id = orders.user_id;
+```
+
+If a user has no order, the user will still appear, but the order value will be `NULL`.
+
+---
+
+## 6. What is Normalization?
+
+**Normalization** is the process of organizing database tables to reduce duplicate data and improve data consistency.
+
+It helps keep the database clean, structured, and easier to maintain.
+
+---
+
+### 1NF — First Normal Form
+
+A table is in **1NF** when each column contains only one value.
+
+#### Bad Example
+
+| id | name | phones |
+|---|---|---|
+| 1 | Rifat | 01711, 01822 |
+
+#### Good Example
+
+| id | name | phone |
+|---|---|---|
+| 1 | Rifat | 01711 |
+| 1 | Rifat | 01822 |
+
+---
+
+### 2NF — Second Normal Form
+
+A table is in **2NF** when:
+
+- It is already in 1NF
+- Every non-key column depends on the full primary key
+
+This mainly applies when a table has a composite primary key.
+
+---
+
+### 3NF — Third Normal Form
+
+A table is in **3NF** when:
+
+- It is already in 2NF
+- No non-key column depends on another non-key column
+
+For example, instead of storing `department_name` directly inside a `students` table, we can store department information in a separate `departments` table.
+
+---
+
+## 7. What is Indexing?
+
+**Indexing** is a technique used to make database searching faster.
+
+An index works like a book index. Instead of scanning every row, the database can quickly find the required data.
+
+### Example
+
+```sql
+CREATE INDEX idx_users_email
+ON users(email);
+```
+
+Now searching by email can become faster:
+
+```sql
+SELECT * FROM users
+WHERE email = 'test@gmail.com';
+```
+
+### Why do we use indexes?
+
+We use indexes to improve query performance, especially on columns that are frequently:
+
+- Searched
+- Filtered
+- Sorted
+- Joined
+
+However, too many indexes can slow down `INSERT`, `UPDATE`, and `DELETE` operations because indexes also need to be updated.
+
+---
+
+## 8. WHERE vs HAVING
+
+| WHERE | HAVING |
+|---|---|
+| Filters rows | Filters groups |
+| Used before grouping | Used after `GROUP BY` |
+| Usually does not use aggregate functions | Can use aggregate functions |
+| Works with normal row data | Works with grouped data |
+
+### WHERE Example
+
+```sql
+SELECT * FROM users
+WHERE age > 18;
+```
+
+### HAVING Example
+
+```sql
+SELECT department, COUNT(*) AS total_users
+FROM users
+GROUP BY department
+HAVING COUNT(*) > 5;
+```
+
+In short, `WHERE` filters rows before grouping, and `HAVING` filters groups after grouping.
+
+---
+
+## 9. What is a Transaction?
+
+A **transaction** is a group of SQL operations that are executed together.
+
+If all operations are successful, the changes are saved using `COMMIT`.
+
+If something goes wrong, the changes can be cancelled using `ROLLBACK`.
+
+### Example
+
+```sql
+BEGIN;
+
+UPDATE accounts
+SET balance = balance - 500
+WHERE id = 1;
+
+UPDATE accounts
+SET balance = balance + 500
+WHERE id = 2;
+
+COMMIT;
+```
+
+---
+
+### COMMIT
+
+`COMMIT` saves the changes permanently.
+
+```sql
+COMMIT;
+```
+
+---
+
+### ROLLBACK
+
+`ROLLBACK` cancels the changes made in the current transaction.
+
+```sql
+ROLLBACK;
+```
+
+---
+
+## 10. Second Highest Salary Query
+
+Assume we have an `employees` table with a `salary` column.
+
+### Using `LIMIT` and `OFFSET`
+
+```sql
+SELECT DISTINCT salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;
+```
+
+This query sorts the salaries from highest to lowest, skips the highest salary, and returns the second highest salary.
+
+---
+
+### Using Subquery
+
+```sql
+SELECT MAX(salary) AS second_highest_salary
+FROM employees
+WHERE salary < (
+  SELECT MAX(salary)
+  FROM employees
+);
+```
+
+This query first finds the highest salary, then finds the maximum salary below it.
+
+---
+
+## Quick Summary
+
+| Topic | Short Answer |
+|---|---|
+| `DELETE` | Removes selected rows |
+| `TRUNCATE` | Removes all rows but keeps table structure |
+| `DROP` | Removes the full table |
+| Primary Key | Uniquely identifies each row |
+| Unique Key | Prevents duplicate values |
+| Foreign Key | Connects two tables |
+| JOIN | Combines data from tables |
+| INNER JOIN | Returns only matching rows |
+| LEFT JOIN | Returns all left table rows and matching right table rows |
+| Normalization | Organizes data and reduces duplication |
+| Indexing | Makes searching faster |
+| WHERE | Filters rows |
+| HAVING | Filters grouped data |
+| Transaction | Executes multiple SQL operations together |
+| COMMIT | Saves changes |
+| ROLLBACK | Cancels changes |
+
+
+
 # Assignment 02
 
 A modular Express.js backend built with TypeScript. The current codebase focuses on API structure, authentication module scaffolding, reusable response formatting, request validation, and centralized error handling. Prisma and PostgreSQL are planned for a future version, but they are not integrated yet.
