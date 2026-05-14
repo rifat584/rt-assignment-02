@@ -2,18 +2,20 @@ import { Request, Response } from "express";
 import { AuthService } from "./auth.service";
 import sendResponse from "../../../utils/ApiResponse";
 import httpStatus from "http-status";
+import catchAsync from "../../../utils/catchAsync";
 
 // Handles-> Req, Res, Service Call
-const login = async (req: Request, res: Response) => {
+const login = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.login("email@com");
-  res.json({
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
     success: true,
-    message: "Login successful",
+    message: "Login Successful",
     data: result,
   });
-};
+});
 
-const register = async (req: Request, res: Response) => {
+const register = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.register({
     name: "Rifat",
     email: "rifat@gmail.com",
@@ -22,10 +24,10 @@ const register = async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Login successful",
+    message: "Register successful",
     data: result,
   });
-};
+});
 
 const changePassword = async (req: Request, res: Response) => {
   const result = await AuthService.changePassword({
@@ -33,7 +35,8 @@ const changePassword = async (req: Request, res: Response) => {
     newPassword: "new",
     confirmNewPassword: "confirmed",
   });
-  res.json({
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
     success: true,
     message: "Password Changed Successfully",
     data: result,
@@ -42,7 +45,8 @@ const changePassword = async (req: Request, res: Response) => {
 
 const forgotPassword = async (req: Request, res: Response) => {
   const result = await AuthService.forgotPassword("myemail@gmail.com");
-  res.json({
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
     success: true,
     message: "Password reset mail sent!",
     data: result,
