@@ -1,3 +1,6 @@
+# ERD DIAGRAM
+[View the ERD diagram](https://drive.google.com/file/d/1_OIcAkLUbbSHWs18X8uLRmlyAlW_dy6d/view?usp=sharing)
+
 # SQL Interview Questions and Answers
 
 ---
