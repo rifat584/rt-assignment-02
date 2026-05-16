@@ -1,3 +1,43 @@
+![alt text](image.png)
+
+
+# 📚 Prisma ORM Interview Guide
+
+## 📝 Table of Contents
+- [What is Prisma ORM?](#1-what-is-prisma-orm-and-why-is-it-used-in-backend-development)
+- [findUnique() vs findFirst()](#2-what-is-the-difference-between-findunique-and-findfirst-in-prisma)
+- [Prisma Migration](#3-what-is-prisma-migration-and-why-is-prisma-migrate-dev-used)
+- [select vs include](#4-explain-the-difference-between-select-and-include-in-prisma)
+- [Prisma Schema](#5-what-is-the-purpose-of-the-prisma-schema-file-schemaprisma-and-what-are-its-main-sections)
+
+---
+
+### 1. What is Prisma ORM and why is it used in backend development?
+* **Prisma** is a modern, fully type-safe ORM for Node.js and TypeScript.
+* It prevents runtime errors by auto-generating a strongly typed query builder based on your schema.
+* It improves developer experience via intuitive data modeling and automated database migrations.
+
+### 2. What is the difference between `findUnique()` and `findFirst()` in Prisma?
+* `findUnique()` retrieves a single record using a unique identifier (like an ID) and is heavily optimized.
+* `findFirst()` searches across any fields and returns the very first record matching the criteria.
+* Use `findUnique()` for exact unique lookups and `findFirst()` for general conditional searches.
+
+### 3. What is Prisma Migration and why is `prisma migrate dev` used?
+* **Prisma Migration** is the system used to keep your database schema in sync with your Prisma models.
+* `prisma migrate dev` compares schemas, creates a SQL migration file, and applies it to the database.
+* It then automatically regenerates the Prisma Client so your codebase immediately reflects the changes.
+
+### 4. Explain the difference between `select` and `include` in Prisma.
+* `select` fetches exactly the specific fields you request, omitting all others (e.g., getting only an email).
+* `include` fetches all default fields of a model *plus* any specified relational data (e.g., a user's posts).
+* **Note:** You cannot use `select` and `include` at the exact same level within a single query.
+
+### 5. What is the purpose of the Prisma schema file (`schema.prisma`) and what are its main sections?
+* It is the central configuration file acting as the single source of truth for your database architecture.
+* The **`datasource`** and **`generator`** blocks define the database connection and client generation tooling.
+* The **`model`** blocks define your actual table structures, field data types, and relational constraints.
+
+
 # ERD DIAGRAM
 [View the ERD diagram](https://drive.google.com/file/d/1_OIcAkLUbbSHWs18X8uLRmlyAlW_dy6d/view?usp=sharing)
 

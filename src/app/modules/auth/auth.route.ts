@@ -9,7 +9,7 @@ const router:Router = Router();
 router.get("/login",
   // validateRequestData(AuthValidation.loginSchema),
   AuthController.login);
-router.get("/register",validateRequestData(AuthValidation.registerSchema), AuthController.register);
+router.post("/register", validateRequestData(AuthValidation.registerSchema), AuthController.register);
 router.get("/change-password", AuthController.changePassword);
 router.get("/forgot-password", AuthController.forgotPassword);
 
