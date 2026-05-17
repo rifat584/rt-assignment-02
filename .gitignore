@@ -2,3 +2,5 @@ node_modules
 dist
 .env
 .vscode/settings.json
+
+/generated/prisma

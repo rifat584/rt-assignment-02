@@ -1,10 +1,37 @@
 import z from "zod";
 
-const loginSchema = z.email("Email should be valid");
-
-const registerSchema = z.object({
-  name: z.string().min(3, "The name must have a minimum 3 character"),
+// register user schema
+export const registerSchema = z.object({
+  name: z.string().min(3, "Name is required"),
+  email: z.email("Invalid email address"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
+// register user type
+export type registerSchemaType = z.infer<typeof registerSchema>;
+
+// login details schema
+export const loginSchema = z.object({
+  email: z.email("Invalid email address"),
+  password: z.string().min(6, "Password is required"),
+});
+
+// login details type
+export type loginSchemaType = z.infer<typeof loginSchema>;
+
+// verify email schema
+export const verifyEmailSchema = z.object({
+    email: z.email("Invalid email address"),
+    code: z
+      .string()
+      .length(6, "Verification code must be 6 digits")
+      .regex(/^\d+$/, "Verification code must contain only numbers"),
+});
+
+// verify email type
+export type verifyEmailSchemaType = z.infer<typeof verifyEmailSchema>;
+
+// -----------
 
 const forgotPasswordSchema = z.email("Email should be valid");
 
@@ -24,6 +51,7 @@ const changePasswordSchema = z
 export const AuthValidation = {
   loginSchema,
   registerSchema,
+  verifyEmailSchema,
   forgotPasswordSchema,
   changePasswordSchema,
 };

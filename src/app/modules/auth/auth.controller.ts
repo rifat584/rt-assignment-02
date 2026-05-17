@@ -6,26 +6,32 @@ import catchAsync from "../../../utils/catchAsync";
 
 // Handles-> Req, Res, Service Call
 const login = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthService.login("email@com");
+  const result = await AuthService.login(req.body);
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Login Successful",
-    data: result,
   });
 });
 
 const register = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthService.register({
-    name: "Rifat",
-    email: "rifat@gmail.com",
-  });
+  const result = await AuthService.register(req.body);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Register successful",
     data: result,
+  });
+});
+
+const verifyEmail = catchAsync(async (req: Request, res: Response) => {
+  const result = await AuthService.verifyEmail(req.body);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Email Verification successful",
   });
 });
 
@@ -56,6 +62,7 @@ const forgotPassword = async (req: Request, res: Response) => {
 export const AuthController = {
   login,
   register,
+  verifyEmail,
   changePassword,
   forgotPassword,
 };
