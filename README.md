@@ -1,4 +1,18 @@
-![alt text](image.png)
+
+#### 1. Registration & Verification Flow
+<img src="./.github/register.png" width="48%" alt="Register Screen" /> <img src="./.github/email_received.png" width="48%" alt="Email Inbox" />
+
+<br />
+
+<img src="./.github/email_verify.png" width="48%" alt="Verify Screen" /> <img src="./.github/login.png" width="48%" alt="Login Screen" />
+
+---
+
+### 📬 API Testing & Postman Collections
+To verify the API endpoints and route payloads, here is the complete Postman collection setup:
+
+![Postman Collections](./.github/postman.png)
+
 
 
 # 📚 Prisma ORM Interview Guide

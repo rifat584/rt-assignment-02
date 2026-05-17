@@ -5,26 +5,33 @@ import httpStatus from "http-status";
 import catchAsync from "../../../utils/catchAsync";
 
 // Handles-> Req, Res, Service Call
+
+// Handle user Login
 const login = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.login(req.body);
+
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Login Successful",
+    data: result,
   });
 });
 
+// Handle User Registration
 const register = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.register(req.body);
+  const { id, name, email, isEmailVerified, createdAt } = result.user;
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Register successful",
-    data: result,
+    data: { id, name, email, isEmailVerified, createdAt },
   });
 });
 
+// Handle Verify Email
 const verifyEmail = catchAsync(async (req: Request, res: Response) => {
   const result = await AuthService.verifyEmail(req.body);
 
